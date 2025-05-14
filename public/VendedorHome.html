@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unimarket - Inicio Vendedor</title>
+  <link rel="stylesheet" href="estilos/EstilosGlobal.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Bienvenido a Unimarket</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="VendedorHome.html">Inicio</a>
+    <a href="Inventario.html">Inventario</a>
+    <a href="PerfilVendedor.html">Perfil</a>
+    <a href="PedidosVendedor.html">Pedidos</a>
+  
+  </nav>
+  
+
+  <main class="landing-container">
+
+    <section class="landing-card">
+      <h2>¿Qué es Unimarket?</h2>
+      <p><strong>Unimarket</strong> es una plataforma web creada para conectar a estudiantes emprendedores con compradores dentro de la comunidad universitaria.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Objetivo del Proyecto</h2>
+      <p>Desarrollar una plataforma web que facilite la conexión entre estudiantes emprendedores y compradores universitarios, promoviendo productos y servicios de manera organizada, accesible y confiable.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Público Objetivo</h2>
+      <p>Estudiantes universitarios que deseen vender productos o servicios, así como aquellos que quieran adquirirlos dentro del campus.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Funcionalidades para vendedores</h2>
+      <ul>
+        <li>Gestión de inventario.</li>
+        <li>Administración de pedidos.</li>
+        <li>Configuración de perfil y promoción de productos/servicios.</li>
+      </ul>
+    </section>
+
+    <section class="landing-card">
+      <h2>Comienza a explorar</h2>
+      <p>Haz clic para empezar a descubrir productos y servicios hechos por estudiantes como tú.</p>
+      <a href="compradorhome.html" class="btn-landing">Ir a la Plataforma</a>
+    </section>
+
+    <section class="landing-card">
+      <h2>Conoce la comunidad</h2>
+      <img src="img/UCLA.png" alt="Estudiantes compartiendo productos">
+    </section>
+
+  </main>
+
+  <script>
+    const nombre = localStorage.getItem('nombres');
+    const bienvenida = document.getElementById('bienvenida');
+
+    if (nombre) {
+      bienvenida.textContent = `Hola, ${nombre}`;
+    } else {
+      bienvenida.textContent = 'Hola!';
+    }
+
+    function cerrarSesion() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+
+</body>
+</html>

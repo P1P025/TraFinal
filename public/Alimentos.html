@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos - Alimentos</title>
+  <link rel="stylesheet" href="estilos/EstilosASO.css" />
+</head>
+
+<body>
+
+  <header>
+    <h1>Alimentos</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="CompradorHome.html">Inicio</a>
+    <a href="Servicios.html">Servicios</a>
+    <a href="Otros.html">Otros</a>
+    <a href="PedidosComprador.html">Pedidos</a>
+    <a href="PerfilComprador.html">Perfil</a>
+    <a href="">Historial</a>
+  </nav>
+
+  <main class="container">
+    
+  </main>
+
+  <button id="toggleCarritoBtn" class="toggle-carrito-btn">
+    🛒 <span id="contadorCarrito">0</span>
+  </button>
+
+  
+  <aside class="carrito-lateral" id="carritoLateral">
+    <h2>🛒 Carrito</h2>
+    <ul id="lista-carrito"></ul>
+    <p><strong>Total: $<span id="total">0</span></strong></p>
+    <button id="finalizarCompraBtn">Finalizar compra</button>
+    <div id="resumenPedido" class="resumen-pedido oculto"></div>
+
+  </aside>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.querySelector("main.container");
+  
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+  
+      if (!token) {
+        console.error("No se encontró el token. Asegúrate de estar autenticado.");
+        return;
+      }
+  
+      try {
+        const respuesta = await fetch("obtener_productos.php", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        const productos = await respuesta.json();
+        const productosArray = productos.productos || [];
+  
+        console.log("Productos recibidos:", productosArray);
+  
+        if (Array.isArray(productosArray)) {
+          productosArray.forEach((producto) => {
+            // 1) Solo los disponibles
+            if (parseInt(producto.disponible, 10) !== 1) return;
+            // 2) Solo los que tienen stock > 0
+            if (parseInt(producto.stock, 10) <= 0) return;
+        
+            // Si pasa ambas comprobaciones, entonces creas la tarjeta:
+            const card = document.createElement("section");
+            card.classList.add("producto-card");
+            card.innerHTML = `
+              <h2>${producto.nombre}</h2>
+              <img src="public/img/${producto.imagen}" alt="${producto.nombre}" class="producto-img" />
+              <p><strong>Descripción:</strong> ${producto.descripcion}</p>
+              <p><strong>Precio:</strong> $${producto.precio}</p>
+              <p><strong>Stock:</strong> ${producto.stock} unidades</p>
+              <button class="btn-agregar" onclick="agregarAlCarrito('${producto.nombre}', ${producto.precio})">Agregar</button>
+              <button class="btn-ver" onclick="toggleDetalles(this)">Visualizar</button>
+        
+              <div class="detalles oculto">
+                <p><strong>Descripción completa:</strong> ${producto.caracteristicas || 'N/A'}</p>
+                <p><strong>Vendedor:</strong> ${producto.cedula}</p>
+                <p><strong>Contacto:</strong> N/A</p>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+        
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+      }
+    });
+
+    function toggleDetalles(boton) {
+      const detalles = boton.nextElementSibling;
+      detalles.classList.toggle("oculto");
+
+      
+      boton.textContent = detalles.classList.contains("oculto") ? "Visualizar" : "Ocultar";
+    }
+
+    function agregarAlCarrito(nombre, precio) {
+      carrito.push({ nombre, precio });
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      listaCarrito.innerHTML = "";
+      let total = 0;
+
+      carrito.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.nombre} - $${item.precio.toLocaleString()}`;
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "Quitar";
+        btnEliminar.onclick = () => {
+          carrito.splice(index, 1);
+          actualizarCarrito();
+        };
+
+        li.appendChild(btnEliminar);
+        listaCarrito.appendChild(li);
+        total += item.precio;
+      });
+
+      totalElemento.textContent = total.toLocaleString();
+      contadorCarrito.textContent = carrito.length; 
+    }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleBtn = document.getElementById("toggleCarritoBtn");
+      const carritoLateral = document.getElementById("carritoLateral");
+
+      toggleBtn.addEventListener("click", () => {
+        carritoLateral.classList.toggle("visible");
+      });
+    });
+  </script>
+  <script src="carrito.js" defer></script>
+
+</body>
+
+</html>

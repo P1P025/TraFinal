@@ -1,0 +1,1 @@
+{"cedula":"1000008313","nombres":"juan","apellidos":"acosta","carrera":"carrera","correo":"juan.acostacu@amigo.edu.co","contraseña":"123456","rol":"comprador"}

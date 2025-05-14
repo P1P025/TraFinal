@@ -1,0 +1,121 @@
+
+:root {
+  --azul: #007b99;
+  --naranja: #f39200;
+  --gris: #848585;
+  --blanco: #ffffff;
+  --fondo: #f9f9f9;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  header {
+    background-color: #007b99;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .navbar {
+    background-color: var(--gris);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .navbar a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  .navbar a:hover {
+    background-color: var(--naranja);
+  }
+  
+  .navbar a.active {
+    background-color: var(--azul);
+  }
+  .perfil-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    padding: 30px;
+  }
+  
+  .perfil-info {
+    max-width: 300px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px #ccc;
+    text-align: center;
+  }
+  
+  .foto-perfil {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+  }
+  
+  .perfil-formulario {
+    max-width: 450px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 10px #ccc;
+  }
+  
+  .perfil-formulario h3 {
+    color: #007b99;
+    margin-bottom: 20px;
+  }
+  
+  .perfil-formulario form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .perfil-formulario label {
+    font-weight: bold;
+    color: #444;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .perfil-formulario input,
+  .perfil-formulario select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #848585;
+    width: 100%;
+  }
+  
+  .perfil-formulario button {
+    background-color: #007b99;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .perfil-formulario button:hover {
+    background-color: #005f73;
+  }
+  

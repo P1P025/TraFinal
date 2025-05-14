@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="estilos/loginregister.css" />
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Iniciar Sesión</h2>
+    <form id="loginForm">
+      <input type="email" name="correo" placeholder="Correo institucional" required />
+      <input type="password" name="contraseña" placeholder="Contraseña" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <a href="registro.html">¿No tienes cuenta? Regístrate</a>
+  </div>
+
+  <script>
+  const form = document.getElementById('loginForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log('📤 Enviando al servidor:', data);
+
+    try {
+      const res = await fetch('login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // 1️⃣ Lee la respuesta como texto y muéstrala
+      const text = await res.text();
+      console.log('🌐 RESPUESTA CRUDA de login.php:', text);
+
+      // 2️⃣ Intenta parsear ese texto a JSON
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (err) {
+        console.error('❌ Error al parsear JSON:', err);
+        console.log('👉 Texto recibido (caracteres escapados):', JSON.stringify(text));
+        throw err;  // para que entre en el catch externo
+      }
+
+      // 3️⃣ Con JSON válido, procesa el login
+      console.log('✅ JSON parseado:', result);
+      if (res.ok) {
+        alert(result.mensaje);
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('nombres', result.usuario.nombres);
+        localStorage.setItem('rol', result.rol);
+        localStorage.setItem('cedula', result.usuario.cedula);
+        localStorage.setItem('correo', result.usuario.correo);
+
+        if (result.rol === 'vendedor') {
+          window.location.href = 'VendedorHome.html';
+        } else {
+          window.location.href = 'CompradorHome.html';
+        }
+      } else {
+        alert(result.mensaje);
+      }
+
+    } catch (error) {
+      alert('Error al conectar con el servidor');
+      console.error('💥 Error en fetch o parse:', error);
+    }
+  });
+</script>
+
+
+
+</body>
+
+</html>

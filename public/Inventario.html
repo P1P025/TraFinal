@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario - Vendedor | Unimarket</title>
+  <link rel="stylesheet" href="estilos/EstilosGlobal.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Inventario</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="VendedorHome.html">Inicio</a>
+    <a href="Inventario.html" class="active">Inventario</a>
+    <a href="PerfilVendedor.html">Perfil</a>
+    <a href="Pedidos.html">Pedidos</a>
+    <div class="usuario-info">
+      <span id="bienvenida"></span>
+    </div>
+  </nav>
+
+  <main class="landing-container">
+    <section class="landing-card">
+      <h2>Mi Inventario</h2>
+      <p>Administra tus productos disponibles:</p>
+
+      <section class="landing-card">
+        <h2>Inventario de Productos</h2>
+        <button id="btnAgregarProducto" class="btn-landing">Agregar Producto</button>
+
+        <!-- Formulario de agregar producto (inicialmente oculto) -->
+        <div id="formProductoContainer" style="display: none;">
+          <form id="formProducto" enctype="multipart/form-data" method="POST">
+            <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre del Producto" required />
+            <input type="text" id="caracteristicasProducto" name="caracteristicas"
+              placeholder="Variedad y Características" required />
+            <input type="number" id="stockProducto" name="stock" placeholder="Stock" required />
+            <textarea id="descripcionProducto" name="descripcion" placeholder="Descripción del Producto"
+              required></textarea>
+            <input type="number" id="precioProducto" name="precio" placeholder="Precio del Producto" required
+              step="0.01" />
+
+            <label for="fechaDisponibleInicio">Fecha de disponibilidad desde:</label>
+            <input type="datetime-local" id="fechaDisponibleInicio" name="fecha_inicio" required />
+
+            <label for="fechaDisponibleFin">Fecha de disponibilidad hasta:</label>
+            <input type="datetime-local" id="fechaDisponibleFin" name="fecha_fin" required />
+
+            <input type="file" id="imagenProducto" name="imagen" accept="image/*" />
+            <img id="previewImagen" style="max-width: 200px; margin-top: 10px; display: none;" />
+            <button type="submit" class="btn-landing">Agregar Producto</button>
+          </form>
+        </div>
+      </section>
+
+      <div id="listaProductos">
+        <div style="margin-bottom: 10px;">
+          <label for="filtroDisponibilidad"> Filtrar: </label>
+          <select id="filtroDisponibilidad">
+            <option value="todos">Todos</option>
+            <option value="disponibles">Solo disponibles</option>
+            <option value="noDisponibles">Solo no disponibles</option>
+          </select>
+        </div>
+
+        <table class="tabla-inventario">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Características</th>
+              <th>Descripción</th>
+              <th>Stock</th>
+              <th>Precio</th>
+              <th>Fecha inicio</th>
+              <th>Fecha fin</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaProductos">
+            <!-- Plantilla oculta -->
+            <tr id="filaPlantilla" style="display: none;">
+              <td class="producto-imagen">
+                <img src="" alt="Imagen del producto" style="width: 80px; height: auto; border-radius: 5px;">
+              </td>
+              <td class="producto-nombre"></td>
+              <td class="producto-caracteristicas"></td>
+              <td class="producto-descripcion"></td>
+              <td class="producto-stock"></td>
+              <td class="producto-precio"></td>
+              <td class="producto-fecha-inicio"></td>
+              <td class="producto-fecha-fin"></td>
+              <td>
+                <button class="btn-eliminar">Eliminar</button>
+              </td>
+              <td class="producto-disponible">
+                <label class="switch">
+                  <input type="checkbox" class="toggle-disponible">
+                  <span class="slider round"></span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const nombre = localStorage.getItem('nombres');
+      if (nombre) {
+        document.getElementById('bienvenida').textContent = `Hola, ${nombre}`;
+      }
+
+      // Formulario nuevo producto
+      document.getElementById('btnAgregarProducto').addEventListener('click', () => {
+        const cont = document.getElementById('formProductoContainer');
+        cont.style.display = (cont.style.display === 'block') ? 'none' : 'block';
+      });
+
+      //Imagen
+      document.getElementById('imagenProducto').addEventListener('change', function () {
+        const file = this.files[0], preview = document.getElementById('previewImagen');
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = 'none';
+        }
+      });
+
+      // Formulario nuevo producto
+      document.getElementById('formProducto').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        formData.append('cedula', localStorage.getItem('cedula'));
+        fetch('agregar_producto.php', { method: 'POST', body: formData })
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              alert(data.message);
+              document.getElementById('formProducto').reset(); 
+              document.getElementById('previewImagen').style.display = 'none'; 
+              document.getElementById('formProductoContainer').style.display = 'none'; 
+              cargarProductos();
+            } else {
+              alert("Errores:\n" + data.errors.join("\n"));
+            }
+          })
+          
+          .catch(() => alert('Error al procesar la solicitud'));
+      });
+
+      // filtro
+      document.getElementById("filtroDisponibilidad")
+        .addEventListener("change", () => cargarProductos());
+
+      cargarProductos();
+    });
+
+    // Carga y filtra productos
+    function cargarProductos() {
+      const filtro = document.getElementById("filtroDisponibilidad").value;
+      const tbody = document.getElementById('tablaProductos');
+      // Limpia filas 
+      tbody.querySelectorAll("tr:not(#filaPlantilla)")
+        .forEach(f => f.remove());
+
+      fetch('obtener_productos.php')
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            data.productos.forEach(prod => {
+              const disp = prod.disponible == 1;
+              if (filtro === 'todos' ||
+                (filtro === 'disponibles' && disp) ||
+                (filtro === 'noDisponibles' && !disp)
+              ) {
+                agregarFilaProducto(prod);
+              }
+            });
+          } else {
+            alert('No se pudieron cargar los productos.');
+          }
+        })
+        .catch(err => console.error('Error:', err));
+    }
+
+    // Agrega fila y controla disponibilidad
+    function agregarFilaProducto(producto) {
+      const plantilla = document.getElementById('filaPlantilla');
+      const fila = plantilla.cloneNode(true);
+      fila.removeAttribute('id');
+      fila.style.display = '';
+
+      fila.querySelector('.producto-imagen img').src = `public/img/${producto.imagen}`;
+      fila.querySelector('.producto-imagen img').alt = producto.nombre;
+      fila.querySelector('.producto-nombre').textContent = producto.nombre;
+      fila.querySelector('.producto-caracteristicas').textContent = producto.caracteristicas;
+      fila.querySelector('.producto-descripcion').textContent = producto.descripcion;
+      fila.querySelector('.producto-stock').textContent = producto.stock;
+      if (parseInt(producto.stock) === 0) {
+        eliminarProducto(producto.id, fila);
+        return; // No agregar al DOM si ya se eliminó
+      }      
+      fila.querySelector('.producto-precio').textContent = `$${producto.precio}`;
+      fila.querySelector('.producto-fecha-inicio').textContent = formatearFecha(producto.fecha_inicio);
+      fila.querySelector('.producto-fecha-fin').textContent = formatearFecha(producto.fecha_fin);
+
+      // Interruptor disponibilidad
+      const toggle = fila.querySelector('.toggle-disponible');
+      toggle.checked = producto.disponible == 1;
+      fila.dataset.disponible = toggle.checked ? '1' : '0';
+
+      toggle.addEventListener('change', function () {
+        fila.dataset.disponible = this.checked ? '1' : '0';
+        alert(this.checked ? "Producto disponible." : "Producto no disponible.");
+        actualizarDisponibilidad(producto.id, this.checked);
+        filtrarProductos();
+      });
+
+      // Botón eliminar
+      fila.querySelector('.btn-eliminar')
+        .addEventListener('click', () => eliminarProducto(producto.id, fila));
+
+      // Añadir y aplicar filtro
+      document.getElementById('tablaProductos').appendChild(fila);
+      filtrarProductos();
+    }
+
+    // Filtra filas 
+    function filtrarProductos() {
+      const filtro = document.getElementById("filtroDisponibilidad").value;
+      document.querySelectorAll("#tablaProductos tr").forEach(fila => {
+        const disp = fila.dataset.disponible;
+        if (disp === undefined) return; 
+        if (filtro === 'todos') {
+          fila.style.display = '';
+        } else if (filtro === 'disponibles') {
+          fila.style.display = disp === '1' ? '' : 'none';
+        } else {
+          fila.style.display = disp === '0' ? '' : 'none';
+        }
+      });
+    }
+
+    // Actualiza disponibilidad
+    function actualizarDisponibilidad(id, estado) {
+      fetch('actualizar_disponibilidad.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, disponible: estado })
+      })
+        .then(r => r.json())
+        .then(json => {
+          if (!json.success) alert("Error al actualizar disponibilidad.");
+        })
+        .catch(() => alert('Error al procesar la solicitud'));
+    }
+
+    // Elimina producto y fila
+    function eliminarProducto(id, fila) {
+      if (!confirm("¿Eliminar este producto?")) return;
+      fetch('eliminar_producto.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      })
+        .then(r => r.json())
+        .then(json => {
+          if (json.success) {
+            fila.remove();
+            alert("Producto eliminado.");
+          } else {
+            alert("Error al eliminar el producto.");
+          }
+        })
+        .catch(() => alert('Error al procesar la solicitud'));
+    }
+
+    // Formatea fecha
+    function formatearFecha(fechaISO) {
+      return new Date(fechaISO).toLocaleString('es-ES');
+    }
+  </script>
+</body>
+
+</html>

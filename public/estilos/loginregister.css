@@ -1,0 +1,131 @@
+:root {
+  --azul: #007b99;
+  --naranja: #f39200;
+  --gris: #848585;
+  --blanco: #ffffff;
+  --fondo: #f9f9f9;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--fondo);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background-color: var(--blanco);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: var(--azul);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--gris);
+  font-size: 14px;
+}
+
+button {
+  background-color: var(--azul);
+  color: var(--blanco);
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005f73;
+}
+
+a {
+  margin-top: 10px;
+  display: inline-block;
+  color: var(--naranja);
+  text-decoration: none;
+  font-weight: bold;
+}
+.usuario-info {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.usuario-info span {
+  font-weight: bold;
+}
+
+.usuario-info button {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.usuario-info button:hover {
+  background-color: #b71c1c;
+}
+.btn-cerrar {
+  background-color: var(--naranja);
+  color: var(--blanco);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cerrar:hover {
+  background-color: #d67a00;
+  transform: scale(1.05);
+}
+
+.bienvenida-navbar {
+  color: var(--blanco);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--azul);
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+

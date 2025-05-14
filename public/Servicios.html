@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos - Servicios</title>
+  <link rel="stylesheet" href="estilos/EstilosASO.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Servicios</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="CompradorHome.html">Inicio</a>
+    <a href="Alimentos.html">Alimentos</a>
+    <a href="Otros.html">Otros</a>
+    <a href="PedidosComprador.html">Pedidos</a>
+    <a href="PerfilComprador.html">Perfil</a>
+    <a href="">Historial</a>
+  </nav>
+  
+
+  <main class="container">
+
+
+
+    <section class="producto-card">
+      <h2>Tutorías HTML, CSS y JS</h2>
+      <img src="img/HTMLCSSJS.png" alt="HTMLCSSJS" class="producto-img" />
+      <p><strong>Descripción:</strong> Clases de programación en html, css y js</p>
+      <p><strong>Precio:</strong> $30.000 por hora</p>
+      <p><strong>Fechas disponibles:</strong> Lunes a Viernes</p>
+      <p><strong>Horas de entrega:</strong> 9:00 AM – 6:00 PM</p>
+
+      <button class="btn-agregar" onclick="agregarAlCarrito('Clase HTML, CSS y JS', 30000)">Agregar</button>
+      <button class="btn-ver" onclick="toggleDetalles(this)">Visualizar</button>
+
+      <div class="detalles oculto">
+        <p><strong>Descripción completa:</strong> Aprende a Crear Sitios Web Desde Cero con un Pro que Explica Fácil 💻🔥
+          ¿Te gustaría aprender a construir páginas web desde cero? Con [Nombre del instructor], dominarás HTML, CSS y JavaScript 
+          de forma práctica, clara y paso a paso. Clases diseñadas para principiantes o quienes quieren reforzar su base, con proyectos reales, 
+          ejercicios guiados y todo explicado con paciencia y buena onda. ¡Convierte tus ideas en sitios web y empieza tu camino como desarrollador web hoy mismo! 🚀👨‍💻👩‍💻</p>
+        <p><strong>Vendedor:</strong> Joaquin Higuita Lopez</p>
+        <p><strong>Contacto:</strong> +57 3206270582| joaquin.higuitalo@amigo.edu.co</p>
+      </div>
+    </section>
+
+    <section class="producto-card">
+      <h2>Tutorías bases de datos</h2>
+      <img src="img/mongodb.jpg" alt="MONGODB" class="producto-img" />
+      <p><strong>Descripción:</strong> Clases de programación en MongoDB</p>
+      <p><strong>Precio:</strong> $40.000 por hora</p>
+      <p><strong>Fechas disponibles:</strong> Lunes a Viernes</p>
+      <p><strong>Horas de entrega:</strong> 9:00 AM – 6:00 PM</p>
+      
+      <button class="btn-agregar" onclick="agregarAlCarrito('Clase MONGODB', 40000)">Agregar</button>
+      <button class="btn-ver" onclick="toggleDetalles(this)">Visualizar</button>
+
+      <div class="detalles oculto">
+        <p><strong>Descripción completa:</strong> Domina MongoDB desde Cero con un Pro que te Explica Fácil 📦⚡
+          ¿Quieres aprender a manejar bases de datos modernas y flexibles? Con [Nombre del instructor], entenderás MongoDB paso a paso, 
+          desde los conceptos básicos hasta consultas avanzadas, modelado de datos y rendimiento. Ideal para quienes quieren trabajar con 
+          bases de datos NoSQL y construir aplicaciones dinámicas con JavaScript. Clases prácticas, ejemplos reales y explicaciones claras para que aprendas de verdad. 🔥💻</p>
+        <p><strong>Vendedor:</strong> Joaquin Higuita Lopez</p>
+        <p><strong>Contacto:</strong> +57 3206270582| joaquin.higuitalo@amigo.edu.co</p>
+      </div>
+    </section>
+    <!-- ...otros productos -->
+
+  </main>
+  <script>
+    function toggleDetalles(boton) {
+      const detalles = boton.nextElementSibling;
+      detalles.classList.toggle("oculto");
+  
+      // Cambiar texto del botón
+      boton.textContent = detalles.classList.contains("oculto") ? "Visualizar" : "Ocultar";
+    }
+  </script>
+  <script src="carrito.js" defer></script>
+  <!-- Botón flotante para abrir/ocultar carrito -->
+  <button id="toggleCarritoBtn" class="toggle-carrito-btn">
+    🛒 <span id="contadorCarrito">0</span>
+  </button>
+  
+  <!-- Carrito flotante lateral -->
+  <aside class="carrito-lateral" id="carritoLateral">
+    <h2>🛒 Carrito</h2>
+    <ul id="lista-carrito"></ul>
+    <p><strong>Total: $<span id="total">0</span></strong></p>
+  </aside>
+
+  <!-- Tu script de funcionalidad -->
+  <script src="carrito.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleBtn = document.getElementById("toggleCarritoBtn");
+      const carritoLateral = document.getElementById("carritoLateral");
+
+      toggleBtn.addEventListener("click", () => {
+        carritoLateral.classList.toggle("visible");
+      });
+    });
+  </script>
+
+</body>
+</html>

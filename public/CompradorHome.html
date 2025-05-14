@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unimarket - Inicio Comprador</title>
+  <link rel="stylesheet" href="estilos/EstilosGlobal.css" />
+</head>
+<body>
+  
+  <header>
+    <h1>Bienvenido a Unimarket</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="CompradorHome.html">Inicio</a>
+    <a href="Alimentos.html">Alimentos</a>
+    <a href="Servicios.html">Servicios</a>
+    <a href="Otros.html">Otros</a>
+    <a href="PedidosComprador.html">Pedidos</a>
+    <a href="PerfilComprador.html">Perfil</a>
+    <a href="">Historial</a>
+  </nav>
+   
+
+  <main class="landing-container">
+
+    <section class="landing-card">
+      <h2>¿Qué es Unimarket?</h2>
+      <p><strong>Unimarket</strong> es una plataforma web creada para conectar a estudiantes emprendedores con compradores dentro de la comunidad universitaria.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Objetivo del Proyecto</h2>
+      <p>Desarrollar una plataforma web que facilite la conexión entre estudiantes emprendedores y compradores universitarios, promoviendo productos y servicios de manera organizada, accesible y confiable.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Público Objetivo</h2>
+      <p>Estudiantes universitarios que deseen vender productos o servicios, así como aquellos que quieran adquirirlos dentro del campus.</p>
+    </section>
+
+    <section class="landing-card">
+      <h2>Funcionalidades para Compradores</h2>
+      <ul>
+        <li>Visualización de productos y servicios.</li>
+        <li>Seguimiento de pedidos e historial.</li>
+        <li>Organización por categorías: alimentos, servicios y otros.</li>
+        <li>Configuración y personalización del perfil.</li>
+      </ul>
+    </section>
+
+    <section class="landing-card">
+      <h2>Comienza a explorar</h2>
+      <p>Haz clic para empezar a descubrir productos y servicios hechos por estudiantes como tú.</p>
+      <a href="compradorhome.html" class="btn-landing">Ir a la Plataforma</a>
+    </section>
+
+    <section class="landing-card">
+      <h2>Conoce la comunidad</h2>
+      <img src="img/UCLA.png" alt="Estudiantes compartiendo productos">
+    </section>
+
+  </main>
+  <script>
+    const nombre = localStorage.getItem('nombres');
+    const bienvenida = document.getElementById('bienvenida');
+    const usuarioInfo = document.querySelector('.usuario-info');
+  
+    if (nombre) {
+      bienvenida.textContent = `Hola, ${nombre}`;
+    } else {
+      // Si no hay sesión, ocultamos toda la sección de usuario
+      usuarioInfo.style.display = 'none';
+    }
+  
+    function cerrarSesion() {
+      localStorage.clear();
+      window.location.href = 'Login.html';
+    }
+
+    //Agregar productos a la pantalla
+    async function cargarProductos() {
+      try {
+        const respuesta = await fetch("getProductos.php");
+        const data = await respuesta.json();
+    
+        if (!data.success) {
+          console.error("Error desde servidor:", data.error);
+          return;
+        }
+    
+        const productos = data.productos;
+        const contenedor = document.getElementById("listaProductos");
+        contenedor.innerHTML = "";
+    
+        productos.forEach(producto => {
+          const imagen = `public/img/${producto.imagen}`; // Ajusta si es necesario
+    
+          contenedor.innerHTML += `
+            <div class="producto">
+              <img src="${imagen}">
+              <h3>${producto.nombre}</h3>
+              <p><strong>Precio:</strong> $${producto.precio}</p>
+              <p><strong>Cantidad:</strong> ${producto.stock}</p>
+              <p>${producto.descripcion}</p>
+            </div>
+          `;
+        });
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+      }
+    }
+    
+  </script>
+  
+  
+</body>
+</html>
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos - Otros</title>
+  <link rel="stylesheet" href="estilos/EstilosASO.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Otros</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="CompradorHome.html">Inicio</a>
+    <a href="Alimentos.html">Alimentos</a>
+    <a href="Servicios.html">Servicios</a>
+    <a href="PedidosComprador.html">Pedidos</a>
+    <a href="PerfilComprador.html">Perfil</a>
+    <a href="">Historial</a>
+  </nav>
+  
+
+  <main class="container">
+
+
+
+    <section class="producto-card">
+      <h2>Portatil Asus E1504FA-NJ474</h2>
+      <img src="img/compuAsus.jpg" alt="Portatil Asus" class="producto-img" />
+      <p><strong>Descripción:</strong> Portatil Asus E1504FA-NJ474 Ryzen 5 7520U Ram 16GB SSD 1TB Pantalla 15,6"FHD </p>
+      <p><strong>Precio:</strong> $2.000.000</p>
+      <p><strong>Fechas disponibles:</strong> Lunes a Viernes</p>
+      <p><strong>Horas de entrega:</strong> 9:00 AM – 6:00 PM</p>
+      <p><strong>Stock:</strong> 1 unidad</p>
+
+      <button class="btn-agregar" onclick="agregarAlCarrito('Portatil Asus', 2000000)">Agregar</button>
+      <button class="btn-ver" onclick="toggleDetalles(this)">Visualizar</button>
+
+      <div class="detalles oculto">
+        <p><strong>Descripción completa:</strong> ¡Vendo Portátil Asus E1504FA-NJ474! 🔥 Ideal para estudio, trabajo o entretenimiento 🎓💻
+
+            Estoy vendiendo mi portátil Asus E1504FA-NJ474 en excelente estado. Perfecto para quienes buscan rendimiento y espacio sin gastar de más.
+            🔧 Especificaciones:
+            
+            Procesador AMD Ryzen 5 7520U – rápido y eficiente
+            
+            16 GB de RAM – ideal para multitarea, clases, diseño o programación
+            
+            SSD de 1TB – almacenamiento veloz y amplio para todo lo que necesites
+            
+            Pantalla 15,6" FHD – colores nítidos y buena definición para ver pelis, editar o estudiar
+            
+            Batería de larga duración y diseño ligero
+            
+            Funciona como nuevo. Lo vendo porque necesito actualizarme por temas específicos de mi carrera.
+            ¡Es una súper oportunidad para estudiantes o profesionales que necesitan una máquina confiable! 📚⚡</p>
+        <p><strong>Vendedor:</strong> Joaquin Higuita Lopez</p>
+        <p><strong>Contacto:</strong> +57 3206270582| joaquin.higuitalo@amigo.edu.co</p>
+      </div>
+    </section>
+
+    <section class="producto-card">
+      <h2>Iphone 13</h2>
+      <img src="img/iphone13.jpg" alt="iphone13" class="producto-img" />
+      <p><strong>Descripción:</strong> Iphone 13</p>
+      <p><strong>Precio:</strong> $2.000.000</p>
+      <p><strong>Fechas disponibles:</strong> Lunes a Viernes</p>
+      <p><strong>Horas de entrega:</strong> 9:00 AM – 6:00 PM</p>
+      
+      <button class="btn-agregar" onclick="agregarAlCarrito('Iphone 13', 2000000)">Agregar</button>
+      <button class="btn-ver" onclick="toggleDetalles(this)">Visualizar</button>
+
+      <div class="detalles oculto">
+        <p><strong>Descripción completa:</strong> ¡Vendo iPhone 13 en Excelente Estado! 📱💙
+
+            Soy estudiante y estoy vendiendo mi iPhone 13 porque necesito el dinero para otros proyectos. El equipo está en perfecto funcionamiento, con muy buen cuidado y batería en buen estado.
+            📦 Características:
+            
+            Pantalla 6.1" Super Retina XDR – colores vivos y gran definición
+            
+            128 GB de almacenamiento – espacio de sobra para fotos, apps y videos
+            
+            Cámara doble de 12 MP – fotos y videos en calidad top, incluso de noche
+            
+            Face ID, iOS actualizado y batería que dura todo el día 🔋
+            
+            Incluye cargador y caja (si aplica)
+            
+            Ideal para quien busca un iPhone potente, fluido y con estilo, ¡a un precio mucho más accesible!
+            Entrega inmediata y trato de confianza. 🙌✨</p>
+        <p><strong>Vendedor:</strong> Joaquin Higuita Lopez</p>
+        <p><strong>Contacto:</strong> +57 3206270582| joaquin.higuitalo@amigo.edu.co</p>
+      </div>
+    </section>
+    <!-- ...otros productos -->
+
+  </main>
+  <script>
+    function toggleDetalles(boton) {
+      const detalles = boton.nextElementSibling;
+      detalles.classList.toggle("oculto");
+  
+      // Cambiar texto del botón
+      boton.textContent = detalles.classList.contains("oculto") ? "Visualizar" : "Ocultar";
+    }
+  </script>
+  <script src="carrito.js" defer></script>
+  <!-- Botón flotante para abrir/ocultar carrito -->
+  <button id="toggleCarritoBtn" class="toggle-carrito-btn">
+    🛒 <span id="contadorCarrito">0</span>
+  </button>
+  
+  <!-- Carrito flotante lateral -->
+  <aside class="carrito-lateral" id="carritoLateral">
+    <h2>🛒 Carrito</h2>
+    <ul id="lista-carrito"></ul>
+    <p><strong>Total: $<span id="total">0</span></strong></p>
+  </aside>
+
+  <!-- Tu script de funcionalidad -->
+  <script src="carrito.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleBtn = document.getElementById("toggleCarritoBtn");
+      const carritoLateral = document.getElementById("carritoLateral");
+
+      toggleBtn.addEventListener("click", () => {
+        carritoLateral.classList.toggle("visible");
+      });
+    });
+  </script>
+
+</body>
+</html>

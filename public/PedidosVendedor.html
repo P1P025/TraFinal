@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pedidos - Unimarket</title>
+  <link rel="stylesheet" href="estilos/EstilosGlobal.css" />
+</head>
+<body>
+    <header>
+        <h1>Pedidos</h1>
+      </header>
+  <nav class="navbar">
+    <a href="VendedorHome.html">Inicio</a>
+    <a href="Inventario.html">Inventario</a>
+    <a href="Inventario.html">Inventario</a>
+    <a href="PerfilVendedor.html">Perfil</a>
+    <a href="Pedidos.html">Pedidos</a>
+    <div class="usuario-info">
+      <span id="bienvenida"></span>
+    </div>
+  </nav>
+
+  
+
+  <main class="landing-container">
+    <section class="landing-card">
+      <h2>Seguimiento de Pedidos</h2>
+      <p>Aquí podrás ver los pedidos que te han realizado y su estado.</p>
+      <!-- Más adelante puedes agregar una tabla dinámica aquí -->
+    </section>
+  </main>
+
+  <script>
+    const nombre = localStorage.getItem('nombres');
+    const bienvenida = document.getElementById('bienvenida');
+    if (nombre) bienvenida.textContent = `¡Hola, ${nombre}!`;
+
+    function cerrarSesion() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

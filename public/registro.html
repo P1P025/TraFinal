@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro</title>
+  <link rel="stylesheet" href="estilos/loginregister.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h2>Registro de Usuario</h2>
+    <form id="registroForm">
+      <input type="text" name="cedula" placeholder="Cédula" required />
+      <input type="text" name="nombres" placeholder="Nombres" required />
+      <input type="text" name="apellidos" placeholder="Apellidos" required />
+      <input type="text" name="carrera" placeholder="Carrera" required />
+      <input type="email" name="correo" placeholder="Correo institucional" required />
+      <input type="password" name="contraseña" placeholder="Contraseña" required />
+      <select name="rol" required>
+        <option value="">Selecciona un rol</option>
+        <option value="vendedor">Vendedor</option>
+        <option value="comprador">Comprador</option>
+      </select>
+      <button type="submit">Registrarse</button>
+    </form>
+    <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+  </div>
+<script>
+  const form = document.getElementById('registroForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log('📤 Datos que envío al servidor:', data);
+
+    try {
+      const res = await fetch('register.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // 1️⃣ Lee la respuesta como texto plano y muéstrala
+      const text = await res.text();
+      console.log('🌐 RESPUESTA CRUDA de register.php:', text);
+
+      // 2️⃣ Ahora parsea ese texto a JSON
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        console.error('❌ Error al parsear JSON:', e);
+        console.log('Texto recibido (con caracteres especiales escapados):', JSON.stringify(text));
+        throw e;  // Así pasamos al catch externo
+      }
+
+      // 3️⃣ Con JSON válido, ya puedes usar result
+      if (res.ok) {
+        alert(result.mensaje);
+        window.location.href = 'login.html';
+      } else {
+        alert(result.mensaje);
+      }
+
+    } catch (error) {
+      alert('Error al registrar usuario');
+      console.error('💥 Error en fetch o en parse:', error);
+    }
+  });
+</script>
+
+
+</body>
+</html>
+

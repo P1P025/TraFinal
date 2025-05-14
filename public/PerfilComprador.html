@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil del Comprador</title>
+  <link rel="stylesheet" href="estilos/EstilosPerfilCom.css"/>
+</head>
+<body>
+
+  <header>
+    <h1>Mi Perfil</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="CompradorHome.html">Inicio</a>
+    <a href="Alimentos.html">Alimentos</a>
+    <a href="Servicios.html">Servicios</a>
+    <a href="Otros.html">Otros</a>
+    <a href="PedidosComprador.html">Pedidos</a>
+    <a href="">Historial</a>
+    <a onclick="cerrarSesion()">Cerrar sesión</a>
+  </nav>
+
+  <main class="perfil-container">
+    <section class="perfil-info">
+      <img src="img/perfil.png" alt="Foto de Perfil" class="foto-perfil" />
+      <!-- Mostrar datos del usuario desde localStorage -->
+      <h2 id="nombreUsuario">Juan Pérez</h2>
+      <p><strong>Rol:</strong> <span id="rolUsuario">Comprador</span></p>
+      <p><strong>Cédula:</strong> <span id="cedulaUsuario">123456789</span></p>
+      <p><strong>Correo:</strong> <span id="correoUsuario">jperez@amigo.edu.co</span></p>
+    </section>
+
+    <section class="perfil-formulario">
+      <h3>Cambiar Contraseña</h3>
+      <form id="cambiarContraseñaForm">
+        <label>Nueva Contraseña:
+          <input type="password" id="nuevaContraseña" placeholder="Nueva contraseña" required />
+        </label>
+
+        <label>Confirmar Nueva Contraseña:
+          <input type="password" id="confirmarContraseña" placeholder="Confirmar nueva contraseña" required />
+        </label>
+
+        <button type="submit">Guardar Cambios</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    function cerrarSesion() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+    // Mostrar los datos del usuario desde localStorage
+    const nombre = localStorage.getItem('nombres');
+    const correo = localStorage.getItem('correo');
+    const cedula = localStorage.getItem('cedula');
+    const rol = localStorage.getItem('rol');
+
+    if (nombre) {
+      document.getElementById('nombreUsuario').textContent = nombre;
+    } else {
+      document.getElementById('nombreUsuario').textContent = 'No disponible';
+    }
+
+    if (correo) {
+      document.getElementById('correoUsuario').textContent = correo;
+    } else {
+      document.getElementById('correoUsuario').textContent = 'No disponible';
+    }
+
+    if (cedula) {
+      document.getElementById('cedulaUsuario').textContent = cedula;
+    } else {
+      document.getElementById('cedulaUsuario').textContent = 'No disponible';
+    }
+
+    if (rol) {
+      document.getElementById('rolUsuario').textContent = rol;
+    } else {
+      document.getElementById('rolUsuario').textContent = 'No disponible';
+    }
+
+    // Función para cambiar la contraseña
+    document.getElementById('cambiarContraseñaForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const nuevaContraseña = document.getElementById('nuevaContraseña').value;
+      const confirmarContraseña = document.getElementById('confirmarContraseña').value;
+
+      if (nuevaContraseña === confirmarContraseña) {
+        // Lógica para actualizar la contraseña en la base de datos
+        // Aquí deberías hacer una petición al servidor para actualizar la contraseña
+        fetch('actualizar_contraseña.php', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nuevaContraseña: nuevaContraseña,
+          }),
+        })
+        // Por ejemplo con fetch (esto debe ser en el backend)
+        alert('Contraseña cambiada correctamente');
+
+        // Actualizar la contraseña en localStorage (solo para demostración)
+        localStorage.setItem('contraseña', nuevaContraseña);
+
+        // Limpiar el formulario
+        document.getElementById('cambiarContraseñaForm').reset();
+      } else {
+        alert('Las contraseñas no coinciden. Por favor, intenta de nuevo.');
+      }
+    });
+  </script>
+
+</body>
+</html>

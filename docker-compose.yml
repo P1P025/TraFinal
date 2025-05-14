@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: unimarket_web
+    restart: unless-stopped
+    ports:
+      - '3000:80'
+    volumes:
+      - ./public:/var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil del Vendedor</title>
+  <link rel="stylesheet" href="estilos/EstilosPerfilCom.css"/>
+</head>
+<body>
+
+  <header>
+    <h1>Mi Perfil</h1>
+  </header>
+
+  <nav class="navbar">
+    <a href="VendedorHome.html">Inicio</a>
+    <a href="Inventario.html">Inventario</a>
+    <a href="PedidosVendedor.html">Pedidos</a>
+    <a onclick="cerrarSesion()">Cerrar sesión</a>
+
+    <section class="perfil-estado">
+      <label>
+        <input type="checkbox" id="estadoVendedorCheckbox" />
+        Cuenta Activa
+      </label>
+    </section>
+    
+  </nav>
+
+  <main class="perfil-container">
+    <section class="perfil-info">
+      <img src="" alt="Foto de Perfil" class="foto-perfil" />
+      <!-- Mostrar datos del vendedor -->
+      <h2 id="nombreVendedor">Juan Pérez</h2>
+      <p><strong>Rol:</strong> <span id="rolVendedor">Vendedor</span></p>
+      <p><strong>Carrera:</strong> <span id="carreraVendedor"></span></p>
+      <p><strong>Cédula:</strong> <span id="cedulaVendedor"></span></p>
+      <p><strong>Correo:</strong> <span id="correoVendedor"></span></p>
+    </section>
+
+    <section class="perfil-formulario">
+      <h3>Cambiar Contraseña</h3>
+      <form id="cambiarContraseñaForm">
+        <label>Nueva Contraseña:
+          <input type="password" id="nuevaContraseña" placeholder="Nueva contraseña" required />
+        </label>
+
+        <label>Confirmar Nueva Contraseña:
+          <input type="password" id="confirmarContraseña" placeholder="Confirmar nueva contraseña" required />
+        </label>
+
+        <button type="submit">Guardar Cambios</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    function cerrarSesion() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      // Mostrar los datos del vendedor desde localStorage
+      const nombre = localStorage.getItem('nombres');
+      const correo = localStorage.getItem('correo');
+      const cedula = localStorage.getItem('cedula');
+      const rol = localStorage.getItem('rol');
+      const carrera = localStorage.getItem('carrera');
+
+      if (nombre) {
+        document.getElementById('nombreVendedor').textContent = nombre;
+      } else {
+        document.getElementById('nombreVendedor').textContent = 'No disponible';
+      }
+
+      if (correo) {
+        document.getElementById('correoVendedor').textContent = correo;
+      } else {
+        document.getElementById('correoVendedor').textContent = 'No disponible';
+      }
+
+      if (cedula) {
+        document.getElementById('cedulaVendedor').textContent = cedula;
+      } else {
+        document.getElementById('cedulaVendedor').textContent = 'No disponible';
+      }
+
+      if (rol) {
+        document.getElementById('rolVendedor').textContent = rol;
+      } else {
+        document.getElementById('rolVendedor').textContent = 'No disponible';
+      }
+
+      if (carrera) {
+        document.getElementById('carreraVendedor').textContent = carrera;
+      } else {
+        document.getElementById('carreraVendedor').textContent = 'No disponible';
+      }
+
+      // Inicialización del estado
+      const estado = localStorage.getItem('estado'); // 'activo' o 'inactivo'
+      const estadoCheckbox = document.getElementById('estadoVendedorCheckbox');
+
+      if (estado === 'activo') {
+        estadoCheckbox.checked = true;
+      } else {
+        estadoCheckbox.checked = false;
+      }
+
+      // Escuchar el cambio en el estado
+      estadoCheckbox.addEventListener('change', () => {
+        const nuevoEstado = estadoCheckbox.checked ? 'activo' : 'inactivo';
+
+        fetch('actualizar_estado.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cedula: localStorage.getItem('cedula'),
+            estado: nuevoEstado,
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.mensaje);
+          localStorage.setItem('estado', nuevoEstado);
+        })
+        .catch(error => {
+          console.error('Error al cambiar el estado:', error);
+          alert('No se pudo actualizar el estado. Intenta de nuevo.');
+          // Revertir el estado del checkbox si hay error
+          estadoCheckbox.checked = !estadoCheckbox.checked;
+        });
+      });
+
+      // Función para cambiar la contraseña
+      document.getElementById('cambiarContraseñaForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const nuevaContraseña = document.getElementById('nuevaContraseña').value;
+        const confirmarContraseña = document.getElementById('confirmarContraseña').value;
+
+        if (nuevaContraseña === confirmarContraseña) {
+          // Ejemplo con fetch para actualizar la contraseña en el backend
+          fetch('actualizar_contraseña.php', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cedula: localStorage.getItem('cedula'),  // identificador del usuario
+              nuevaContraseña: nuevaContraseña
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.mensaje); // Mostrar el mensaje que te devuelva el servidor
+          })
+          .catch(error => {
+            console.error('Error al cambiar la contraseña:', error);
+            alert('Ocurrió un error al cambiar la contraseña. Intenta de nuevo.');
+          });
+
+          // Actualizar la contraseña en localStorage (esto también debe ser en el servidor)
+          localStorage.setItem('contraseña', nuevaContraseña);
+
+          // Limpiar el formulario
+          document.getElementById('cambiarContraseñaForm').reset();
+        } else {
+          alert('Las contraseñas no coinciden. Por favor, intenta de nuevo.');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

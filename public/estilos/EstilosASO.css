@@ -1,0 +1,293 @@
+:root {
+    --azul: #007b99;
+    --naranja: #f39200;
+    --gris: #848585;
+    --blanco: #ffffff;
+    --fondo: #f9f9f9;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--fondo);
+    color: #333;
+  }
+  
+  header {
+    background-color: var(--azul);
+    color: var(--blanco);
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    gap: 2rem;
+  }
+  
+  .producto-card {
+    background-color: var(--blanco);
+    border-left: 6px solid var(--naranja);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .producto-card h2 {
+    margin-top: 0;
+    color: var(--azul);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .producto-card p {
+    margin: 0.4rem 0;
+    font-size: 1rem;
+  }
+  
+  .producto-card p strong {
+    color: var(--gris);
+  }
+  .navbar {
+    background-color: var(--gris);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .navbar a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  .navbar a:hover {
+    background-color: var(--naranja);
+  }
+  
+  .navbar a.active {
+    background-color: var(--azul);
+  }
+  .producto-card .producto-img {
+    max-width: 100%;
+    max-height: 300px;   
+    object-fit: cover;   
+  }
+  
+  .btn-ver {
+    background-color: var(--azul);
+    color: var(--blanco);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-ver:hover {
+    background-color: var(--naranja);
+  }
+  
+  .btn-agregar {
+    background-color: var(--azul);
+    color: var(--blanco);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-agregar:hover {
+    background-color: var(--naranja);
+  }
+  .detalles {
+    margin-top: 1rem;
+    border-top: 1px solid #ccc;
+    padding-top: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .oculto {
+    display: none;
+  }
+  .carrito {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 10px;
+    max-width: 300px;
+  }
+  .carrito button {
+    margin-left: 10px;
+  }
+/* Botón flotante */
+.toggle-carrito-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007b99;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Carrito lateral */
+.carrito-lateral {
+  position: fixed;
+  top: 0;
+  right: -350px; /* fuera de la pantalla */
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.carrito-lateral.visible {
+  right: 0;
+}
+
+.carrito-lateral ul {
+  list-style: none;
+  padding: 0;
+}
+
+.carrito-lateral li {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carrito-lateral button {
+  background-color: #f39200;
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.toggle-carrito-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007b99;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  font-size: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.toggle-carrito-btn span {
+  background-color: #f39200;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-left: 8px;
+}
+/* --------- RESPONSIVE DESIGN --------- */
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .producto-card {
+    padding: 1rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .navbar a {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  .carrito-lateral {
+    width: 100%;
+    right: -100%;
+  }
+
+  .carrito-lateral.visible {
+    right: 0;
+  }
+
+  .toggle-carrito-btn {
+    bottom: 15px;
+    right: 15px;
+    padding: 12px 16px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .producto-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .producto-card p {
+    font-size: 0.95rem;
+  }
+
+  .btn-ver, .producto-card button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .carrito-lateral {
+    padding: 15px;
+  }
+
+  .toggle-carrito-btn {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+}
